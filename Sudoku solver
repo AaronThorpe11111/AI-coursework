@@ -7,3 +7,23 @@ class sudokuSolver:
         self.grid = [row[:] for row in grid]
         self.steps = 0
         self.backtracks = 0
+
+    @classmethod
+    def _load_from_file(cls, filename):
+        #Loads a Sudoku puzzle from a text file
+        grid = []
+        with open(filename, "r") as file:
+            for line in file:
+                #removes whitespace from the beginning and end of the line
+                line = line.strip()
+                #skips empty lines in the file
+                if not line:
+                    continue
+                #splits the line into individual numbers and converts them to integers
+                if "," in line:
+                    row = [int(x.strip()) for x in line.split(",")]
+                else:
+                    row = [int(x) for x in line.split()]
+                grid.append(row)
+        #returns an instance fo the sudokySlover class with the grid from the file
+        return cls(grid)
