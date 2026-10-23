@@ -20,10 +20,30 @@ class sudokuSolver:
                 if not line:
                     continue
                 #splits the line into individual numbers and converts them to integers
-                if "," in line:
-                    row = [int(x.strip()) for x in line.split(",")]
-                else:
-                    row = [int(x) for x in line.split()]
+                row = [int(x) for x in line.split()]
                 grid.append(row)
         #returns an instance fo the sudokySlover class with the grid from the file
         return cls(grid)
+
+    def display(self):
+        #Displays the current state of the Sudoku grid
+        for row in self.grid:
+            print(" ".join(str(num) if num != 0 else "." for num in row))
+        print()
+
+if __name__ == "__main__":
+  # Sample puzzle represented directly for demonstration
+  sample_grid = [
+      [5, 3, 0, 0, 7, 0, 0, 0, 0],
+      [6, 0, 0, 1, 9, 5, 0, 0, 0],
+      [0, 9, 8, 0, 0, 0, 0, 6, 0],
+      [8, 0, 0, 0, 6, 0, 0, 0, 3],
+      [4, 0, 0, 8, 0, 3, 0, 0, 1],
+      [7, 0, 0, 0, 2, 0, 0, 0, 6],
+      [0, 6, 0, 0, 0, 0, 2, 8, 0],
+      [0, 0, 0, 4, 1, 9, 0, 0, 5],
+      [0, 0, 0, 0, 8, 0, 0, 7, 9],
+  ]
+
+Solver = sudokuSolver(sample_grid)
+Solver.display()
