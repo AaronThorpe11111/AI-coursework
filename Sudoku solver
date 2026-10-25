@@ -25,6 +25,46 @@ class sudokuSolver:
         #returns an instance fo the sudokySlover class with the grid from the file
         return cls(grid)
 
+    def _domain(self, row, col):
+        used = set()
+        #Creates a set of all numbers already used
+        for i in range(9):
+              used.add(self.grid[row][i])
+              used.add(self.grid[i][col])
+
+        #check the 3x3 sub-grid for used numbers
+        #finds the top left corner of the 3x3 sub-grid
+        grid_row = (row // 3) * 3
+        grid_col = (col // 3) * 3
+
+        for i in range(3):
+            for j in range(3):
+                #adds the number used at those coordinates to the set of used numbers
+                used.add(self.grid[grid_row + i][grid_col + j])
+        #return the set of numbers which can be used in the curent cell
+        return {1, 2, 3, 4, 5, 6, 7, 8, 9} - used
+
+    def _mrv(self):
+        min_vals = 10
+        mrv_cell = None
+
+        # Iterates through each cell in the grid to find the cell with the fewest values
+        for row in range(9):
+            for col in range(9):
+                # Checks if the cell is empty (value 0) and calculates its domain
+                if self.grid[row][col] == 0:
+                    domain = self._domain(row, col)
+                # updates the mrv_cell if the current cell has fewer possible values
+                if len(domain) < min_vals:
+                    min_vals = len(domain)
+                    mrv_cell = (row, col)
+
+                # returns the current cell if it reaches a dead end
+                if min_vals == 0:
+                    return (row,col)
+        return mrv_cell
+        
+
     def display(self):
         #Displays the current state of the Sudoku grid
         for row in self.grid:
