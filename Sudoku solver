@@ -7,7 +7,7 @@ class sudokuSolver:
         self.grid = [row[:] for row in grid]
         self.steps = 0
         self.backtracks = 0
-
+ 
     @classmethod
     def _load_from_file(cls, filename):
         #Loads a Sudoku puzzle from a text file
