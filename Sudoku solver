@@ -10,21 +10,22 @@ class sudokuSolver:
  
     @classmethod
     def _load_from_file(cls, filename):
-        #Loads a Sudoku puzzle from a text file
+        # Loads a Sudoku puzzle from a text file
         grid = []
         with open(filename, "r") as file:
             for line in file:
-                #removes whitespace from the beginning and end of the line
+                # Removes whitespace from the beginning and end of the line
                 line = line.strip()
-                #skips empty lines in the file
+                # Skips empty lines in the file
                 if not line:
                     continue
-                #splits the line into individual numbers and converts them to integers
+                # Splits the line into individual numbers and converts them to integers
                 row = [int(x) for x in line.split()]
                 grid.append(row)
         #returns an instance fo the sudokySlover class with the grid from the file
         return cls(grid)
 
+    # Finds the cell with the smallest number of possible values
     def _domain(self, row, col):
         used = set()
         #Creates a set of all numbers already used
@@ -44,7 +45,6 @@ class sudokuSolver:
         #return the set of numbers which can be used in the curent cell
         return {1, 2, 3, 4, 5, 6, 7, 8, 9} - used
 
-    '''add comments to this function'''
     def _mrv(self):
         min_vals = 10
         mrv_cell = None
@@ -55,18 +55,19 @@ class sudokuSolver:
                 # Checks if the cell is empty (value 0) and calculates its domain
                 if self.grid[row][col] == 0:
                     domain = self._domain(row, col)
-                # updates the mrv_cell if the current cell has fewer possible values
+                # Updates the mrv_cell if the current cell has fewer possible values
                     if len(domain) < min_vals:
                         min_vals = len(domain)
                         mrv_cell = (row, col)
 
-                # returns the current cell if it reaches a dead end
+                # Returns the current cell if it reaches a dead end
                 if min_vals == 0:
                     return (row,col)
         return mrv_cell
-    '''NEED TO FIX THIS FUNCTION'''
-    '''add comments to this function'''
+
     def _backtrack(self):
+        self.steps += 1
+
         cell = self._mrv()
         # Base case: if no empty cells remain, the puzzle is solved
         if cell is None:
@@ -76,44 +77,46 @@ class sudokuSolver:
         col = cell[1]
 
         domain = self._domain(row, col)
-        # If the domain is empty, backtrack
+        # If the domain has no possibe values for this cell it backtracks to the previous cell
         if not domain:
             self.backtracks += 1
             return False
 
+        # Tries each value in the domain for the current cell
         for val in domain:
             self.grid[row][col] = val
             if self._backtrack():
                 return True
-            # Undo assignment (backtrack)
+            # If the value doesn't lead to a solution, it resets the cell and backtracks
             self.grid[row][col] = 0
 
+        # If no value lead to a solution it will backtrack to the previous cell
+        self.backtracks += 1
+        return False
+
     def _solve(self):
-        #Solves the puzzle and tracks the time taken to solve it
+        # Solves the puzzle and tracks the time taken to solve it
         start_time = time.time()
         solved = self._backtrack()
         end_time = time.time()
         return solved, end_time - start_time
 
     def display(self):
-        #Displays the current state of the Sudoku grid
+        # Displays the current state of the Sudoku grid
         for row in self.grid:
             print(" ".join(str(num) if num != 0 else "." for num in row))
         print()
 
-Solver = sudokuSolver._load_from_file("Sudoku.txt")
+Solver = sudokuSolver._load_from_file("SudokuBad.txt")
 Solver.display()
-'''Come back to this later'''
-# assigns the returned results (solved grid and time taken) from _solve()
+# Assigns the returned results (solved grid and time taken) from _solve()
 solved, time_taken = Solver._solve()
 
 if solved:
     print(f"\nPuzzle Solved Successfully in {time_taken:.4f} seconds!")
-    print(
-        f"Performance Metrics -> Steps: {Solver.steps}, Backtracks:"
-        f" {Solver.backtracks}"
-    )
+    print(f"\nSteps: {Solver.steps}, Backtracks: {Solver.backtracks}")
     print("\nSolved Puzzle:")
     Solver.display()
 else:
     print("\nNo solution exists for this puzzle.")
+    print(f"\nSteps: {Solver.steps}, Backtracks: {Solver.backtracks}")
