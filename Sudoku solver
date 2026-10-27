@@ -1,1 +1,129 @@
+'''
+READ ME
+This is a Sudoku solver implemented in Python. 
+In order to run the program I used a Python extension for Visual Studio Code called "Python" by Microsoft.
+This gave me a Python interpreter to run the program and a debugger to step through the code.
+It should also be possible to run the program in a terminal or command prompt with Python installed, but I have not tested this.
+'''
+class sudokuSolver:
 
+    #constructor for the 9x9 sudoku grid
+    def __init__(self, grid):
+        # Creates a copy of the grid to avoid changing the original
+        self.grid = [row[:] for row in grid]
+
+        self.steps = 0
+        self.backtracks = 0
+ 
+    @classmethod
+    def _load_from_file(cls, filename):
+        # Loads a Sudoku puzzle from a text file
+        grid = []
+        with open(filename, "r") as file:
+            for line in file:
+                # Removes whitespace from the beginning and end of the line
+                line = line.strip()
+                # Skips empty lines in the file
+                if not line:
+                    continue
+                # Splits the line into individual numbers and converts them to integers
+                row = [int(x) for x in line.split()]
+                grid.append(row)
+        #returns an instance fo the sudokuSlover class with the grid from the file
+        return cls(grid)
+
+    # Finds the cell with the smallest number of possible values
+    def _domain(self, row, col):
+        used = set()
+        #Creates a set of all numbers already used
+        for i in range(9):
+              used.add(self.grid[row][i])
+              used.add(self.grid[i][col])
+
+        #check the 3x3 sub-grid for used numbers
+        #finds the top left corner of the 3x3 sub-grid
+        grid_row = (row // 3) * 3
+        grid_col = (col // 3) * 3
+
+        for i in range(3):
+            for j in range(3):
+                #adds the number used at those coordinates to the set of used numbers
+                used.add(self.grid[grid_row + i][grid_col + j])
+        #return the set of numbers which can be used in the curent cell
+        return {1, 2, 3, 4, 5, 6, 7, 8, 9} - used
+
+    def _mrv(self):
+        min_vals = 10
+        mrv_cell = None
+
+        # Iterates through each cell in the grid to find the cell with the fewest values
+        for row in range(9):
+            for col in range(9):
+                # Checks if the cell is empty (value 0) and calculates its domain
+                if self.grid[row][col] == 0:
+                    domain = self._domain(row, col)
+                # Updates the mrv_cell if the current cell has fewer possible values
+                    if len(domain) < min_vals:
+                        min_vals = len(domain)
+                        mrv_cell = (row, col)
+
+                # Returns the current cell if it reaches a dead end
+                if min_vals == 0:
+                    return (row,col)
+        return mrv_cell
+
+    def _backtrack(self):
+        self.steps += 1
+
+        cell = self._mrv()
+        # Base case: if no empty cells remain, the puzzle is solved
+        if cell is None:
+            return True
+
+        row = cell[0]
+        col = cell[1]
+
+        domain = self._domain(row, col)
+        # If the domain has no possibe values for this cell it backtracks to the previous cell
+        if not domain:
+            self.backtracks += 1
+            return False
+
+        # Tries each value in the domain for the current cell
+        for val in domain:
+            self.grid[row][col] = val
+            if self._backtrack():
+                return True
+            # If the value doesn't lead to a solution, it resets the cell and backtracks
+            self.grid[row][col] = 0
+
+        # If no value lead to a solution it will backtrack to the previous cell
+        self.backtracks += 1
+        return False
+
+    def _solve(self):
+        # Solves the puzzle
+        solved = self._backtrack()
+        return solved
+
+    def display(self):
+        # Displays the current state of the Sudoku grid
+        for row in self.grid:
+            # Prints each number in the row and replaces 0 with a dot for empty cells
+            # The .join(str(num)) is used to turn the int values into strings so they can be joined with spaces
+            print(" ".join(str(num) if num != 0 else "." for num in row))
+        print()
+
+Solver = sudokuSolver._load_from_file("SudokuBad.txt")
+Solver.display()
+# Assigns the returned results (solved grid) from _solve()
+solved = Solver._solve()
+
+if solved:
+    print("\nPuzzle Solved Successfully")
+    print(f"\nSteps: {Solver.steps}, Backtracks: {Solver.backtracks}")
+    print("\nSolved Puzzle:")
+    Solver.display()
+else:
+    print("\nNo solution exists for this puzzle.")
+    print(f"\nSteps: {Solver.steps}, Backtracks: {Solver.backtracks}")
