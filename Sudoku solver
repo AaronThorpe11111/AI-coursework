@@ -64,7 +64,7 @@ class sudokuSolver:
                 if min_vals == 0:
                     return (row,col)
         return mrv_cell
-
+    '''NEED TO FIX THIS FUNCTION'''
     '''add comments to this function'''
     def _backtrack(self):
         cell = self._mrv()
@@ -104,10 +104,11 @@ class sudokuSolver:
 Solver = sudokuSolver._load_from_file("Sudoku.txt")
 Solver.display()
 '''Come back to this later'''
-solved, solving_time = Solver._solve()
+# assigns the returned results (solved grid and time taken) from _solve()
+solved, time_taken = Solver._solve()
 
 if solved:
-    print(f"\nPuzzle Solved Successfully in {solving_time:.4f} seconds!")
+    print(f"\nPuzzle Solved Successfully in {time_taken:.4f} seconds!")
     print(
         f"Performance Metrics -> Steps: {Solver.steps}, Backtracks:"
         f" {Solver.backtracks}"
