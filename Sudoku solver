@@ -1,8 +1,17 @@
+'''
+READ ME
+This is a Sudoku solver implemented in Python. 
+In order to run the program I used a Python extension for Visual Studio Code called "Python" by Microsoft.
+This gave me a Python interpreter to run the program and a debugger to step through the code.
+It should also be possible to run the program in a terminal or command prompt with Python installed, but I have not tested this.
+'''
 class sudokuSolver:
 
     #constructor for the 9x9 sudoku grid
     def __init__(self, grid):
+        # Creates a copy of the grid to avoid changing the original
         self.grid = [row[:] for row in grid]
+
         self.steps = 0
         self.backtracks = 0
  
@@ -20,7 +29,7 @@ class sudokuSolver:
                 # Splits the line into individual numbers and converts them to integers
                 row = [int(x) for x in line.split()]
                 grid.append(row)
-        #returns an instance fo the sudokySlover class with the grid from the file
+        #returns an instance fo the sudokuSlover class with the grid from the file
         return cls(grid)
 
     # Finds the cell with the smallest number of possible values
