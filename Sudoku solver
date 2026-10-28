@@ -47,7 +47,7 @@ class sudokuSolver:
 
         for i in range(3):
             for j in range(3):
-                #adds the number used at those coordinates to the set of used numbers
+                # Adds the number used at those coordinates to the set of used numbers
                 used.add(self.grid[grid_row + i][grid_col + j])
         # Return the set of numbers which can be used in the curent cell
         return {1, 2, 3, 4, 5, 6, 7, 8, 9} - used
