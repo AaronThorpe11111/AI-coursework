@@ -18,38 +18,25 @@
 
     (:init
 
-        ; -------------------------------
         ; Rover / Lander assignments
-        ; -------------------------------
-
         (assigned rover1 lander1)
         (assigned rover2 lander2)
 
-        ; -------------------------------
         ; Rover 1 starts deployed
-        ; -------------------------------
-
         (deployed rover1)
         (at-rover rover1 wp2)
 
-        ; -------------------------------
         ; Rover 2 starts aboard Lander 2
-        ; -------------------------------
-
         (aboard rover2 lander2)
 
-        ; -------------------------------
         ; Lander locations
-        ; -------------------------------
 
         (at-lander lander1 wp2)
 
         ; chosen landing site for lander2
         (at-lander lander2 wp1)
 
-        ; -------------------------------
         ; Rover capacities
-        ; -------------------------------
 
         (memory-free rover1)
         (memory-free rover2)
@@ -57,16 +44,12 @@
         (sample-space-free rover1)
         (sample-space-free rover2)
 
-        ; -------------------------------
         ; Lander capacities
-        ; -------------------------------
 
         (lander-space-free lander1)
         (lander-space-free lander2)
 
-        ; -------------------------------
-        ; Connectivity
-        ; -------------------------------
+        ; Waypoints
 
         (connected wp1 wp2)
 
@@ -83,9 +66,7 @@
 
         (connected wp6 wp4)
 
-        ; -------------------------------
         ; Mission resources
-        ; -------------------------------
 
         ; image required from waypoint 3
         (image-site image1 wp3)

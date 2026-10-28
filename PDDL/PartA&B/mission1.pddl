@@ -34,7 +34,7 @@
         ; Lander can store one sample
         (lander-space-free lander1)
 
-        ; Connectivity
+        ; Waypoints
 
         (connected wp1 wp2)
         (connected wp1 wp4)
