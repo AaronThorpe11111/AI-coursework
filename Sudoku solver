@@ -45,6 +45,7 @@ class sudokuSolver:
         grid_row = (row // 3) * 3
         grid_col = (col // 3) * 3
 
+
         for i in range(3):
             for j in range(3):
                 # Adds the number used at those coordinates to the set of used numbers
