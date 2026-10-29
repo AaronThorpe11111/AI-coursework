@@ -7,7 +7,7 @@ It should also be possible to run the program in a terminal or command prompt wi
 '''
 class sudokuSolver:
 
-    #constructor for the 9x9 sudoku grid
+    # Constructor for the 9x9 sudoku grid
     def __init__(self, grid):
         # Creates a copy of the grid to avoid changing the original
         self.grid = [row[:] for row in grid]
@@ -29,27 +29,28 @@ class sudokuSolver:
                 # Splits the line into individual numbers and converts them to integers
                 row = [int(x) for x in line.split()]
                 grid.append(row)
-        #returns an instance fo the sudokuSlover class with the grid from the file
+        # Returns an instance of the sudokuSolver class with the grid from the file
         return cls(grid)
 
-    # Finds the cell with the smallest number of possible values
+    # Finds the possible values for a given cell in the Sudoku grid
     def _domain(self, row, col):
         used = set()
-        #Creates a set of all numbers already used
+        # Creates a set of all numbers already used
         for i in range(9):
               used.add(self.grid[row][i])
               used.add(self.grid[i][col])
 
-        #check the 3x3 sub-grid for used numbers
-        #finds the top left corner of the 3x3 sub-grid
+        # Check the 3x3 sub-grid for used numbers
+        # Finds the top left corner of the 3x3 sub-grid
         grid_row = (row // 3) * 3
         grid_col = (col // 3) * 3
 
+
         for i in range(3):
             for j in range(3):
-                #adds the number used at those coordinates to the set of used numbers
+                # Adds the number used at those coordinates to the set of used numbers
                 used.add(self.grid[grid_row + i][grid_col + j])
-        #return the set of numbers which can be used in the curent cell
+        # Return the set of numbers which can be used in the curent cell
         return {1, 2, 3, 4, 5, 6, 7, 8, 9} - used
 
     def _mrv(self):
@@ -67,9 +68,9 @@ class sudokuSolver:
                         min_vals = len(domain)
                         mrv_cell = (row, col)
 
-                # Returns the current cell if it reaches a dead end
-                if min_vals == 0:
-                    return (row,col)
+                    # Returns the current cell if it reaches a dead end
+                    if min_vals == 0:
+                        return (row,col)
         return mrv_cell
 
     def _backtrack(self):
